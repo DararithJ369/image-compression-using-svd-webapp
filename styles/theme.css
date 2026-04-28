@@ -1,0 +1,215 @@
+/* ---------- Google Fonts ---------- */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Syne:wght@400;600;800&display=swap');
+
+/* ---------- Root variables ---------- */
+:root {
+    --bg:       #0b0e14;
+    --surface:  #111520;
+    --panel:    #161c2d;
+    --border:   #1f2a45;
+    --accent:   #00e5ff;
+    --accent2:  #ff6b6b;
+    --accent3:  #a78bfa;
+    --text:     #c9d1e8;
+    --muted:    #4a5578;
+    --success:  #34d399;
+    --warn:     #fbbf24;
+}
+
+/* ---------- Global ---------- */
+html, body, [data-testid="stAppViewContainer"] {
+    background-color: var(--bg) !important;
+    color: var(--text) !important;
+    font-family: 'JetBrains Mono', monospace !important;
+}
+[data-testid="stSidebar"] {
+    background-color: var(--surface) !important;
+    border-right: 1px solid var(--border) !important;
+}
+[data-testid="stSidebar"] * { color: var(--text) !important; }
+
+/* ---------- Hide default footer & deploy button only ---------- */
+/* Do NOT hide `header` — it contains the sidebar collapse/expand toggle */
+footer { visibility: hidden; }
+[data-testid="stToolbar"] { display: none; }
+[data-testid="stDecoration"] { display: none; }
+
+/* ---------- File uploader ---------- */
+[data-testid="stFileUploader"] {
+    border: 2px dashed var(--border) !important;
+    border-radius: 12px !important;
+    background: var(--panel) !important;
+    padding: 1rem !important;
+    transition: border-color .3s;
+}
+[data-testid="stFileUploader"]:hover { border-color: var(--accent) !important; }
+
+/* ---------- Metric cards ---------- */
+.metric-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin: 1.5rem 0;
+}
+.metric-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    position: relative;
+    overflow: hidden;
+}
+.metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+}
+.metric-card.c1::before { background: var(--accent); }
+.metric-card.c2::before { background: var(--accent2); }
+.metric-card.c3::before { background: var(--accent3); }
+.metric-card.c4::before { background: var(--success); }
+.metric-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+}
+.metric-value {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1;
+}
+.metric-card.c1 .metric-value { color: var(--accent); }
+.metric-card.c2 .metric-value { color: var(--accent2); }
+.metric-card.c3 .metric-value { color: var(--accent3); }
+.metric-card.c4 .metric-value { color: var(--success); }
+.metric-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+}
+
+/* ---------- Overview box ---------- */
+.overview-box {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
+    font-size: 13px;
+    color: var(--text);
+}
+.overview-box b { color: var(--accent); font-weight: 600; }
+.math-pill {
+    display: inline-block;
+    background: rgba(0,229,255,.08);
+    border: 1px solid rgba(0,229,255,.2);
+    border-radius: 6px;
+    padding: 2px 10px;
+    font-size: 12px;
+    color: var(--accent);
+    margin: 2px 4px;
+}
+
+/* ---------- Image panel labels ---------- */
+.img-panel-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.badge {
+    background: rgba(0,229,255,.12);
+    color: var(--accent);
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 10px;
+    border: 1px solid rgba(0,229,255,.25);
+}
+.badge.red {
+    background: rgba(255,107,107,.12);
+    color: var(--accent2);
+    border-color: rgba(255,107,107,.25);
+}
+
+/* ---------- Progress bar ---------- */
+.quality-bar-wrap {
+    background: var(--border);
+    border-radius: 4px;
+    height: 4px;
+    margin-top: 8px;
+    overflow: hidden;
+}
+.quality-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width .5s ease;
+}
+
+/* ---------- Sidebar info box ---------- */
+.sidebar-info {
+    background: rgba(0,229,255,.05);
+    border: 1px solid rgba(0,229,255,.15);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 11px;
+    line-height: 1.8;
+    color: var(--muted);
+    margin-top: 12px;
+}
+.sidebar-info b { color: var(--accent); }
+
+/* ---------- Download button ---------- */
+[data-testid="stDownloadButton"] button {
+    background: transparent !important;
+    border: 1px solid var(--accent) !important;
+    color: var(--accent) !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 12px !important;
+    letter-spacing: 1px !important;
+    border-radius: 6px !important;
+    transition: all .2s !important;
+    width: 100% !important;
+}
+[data-testid="stDownloadButton"] button:hover {
+    background: var(--accent) !important;
+    color: var(--bg) !important;
+}
+
+/* ---------- Tabs ---------- */
+[data-baseweb="tab-list"] {
+    background: var(--panel) !important;
+    border-radius: 8px !important;
+    gap: 4px !important;
+    padding: 4px !important;
+    border: 1px solid var(--border) !important;
+}
+[data-baseweb="tab"] {
+    background: transparent !important;
+    color: var(--muted) !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 11px !important;
+    letter-spacing: 1px !important;
+    border-radius: 6px !important;
+}
+[aria-selected="true"][data-baseweb="tab"] {
+    background: var(--accent) !important;
+    color: var(--bg) !important;
+}
+[data-testid="stTabPanel"] {
+    background: var(--panel) !important;
+    border: 1px solid var(--border) !important;
+    border-top: none !important;
+    border-radius: 0 0 10px 10px !important;
+    padding: 1.5rem !important;
+}
