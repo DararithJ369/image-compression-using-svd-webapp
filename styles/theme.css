@@ -16,23 +16,58 @@
     --warn:     #fbbf24;
 }
 
-/* ---------- Global ---------- */
-html, body, [data-testid="stAppViewContainer"] {
-    background-color: var(--bg) !important;
+html, body, .stApp, [data-testid="stAppViewContainer"] {
+    background:
+        radial-gradient(circle at top left, rgba(0, 229, 255, 0.10), transparent 28%),
+        radial-gradient(circle at top right, rgba(167, 139, 250, 0.10), transparent 30%),
+        linear-gradient(180deg, #0a0d14 0%, #0b0f18 55%, #090c12 100%) !important;
     color: var(--text) !important;
-    font-family: 'JetBrains Mono', monospace !important;
 }
+
+[data-testid="stAppViewContainer"] > .main {
+    background: transparent !important;
+}
+
+[data-testid="stAppViewContainer"] .main {
+    background: transparent !important;
+}
+
+[data-testid="stAppViewContainer"] .main .block-container {
+    padding-top: 2rem;
+    padding-bottom: 2.5rem;
+}
+
+[data-testid="stHeader"] {
+    background: transparent !important;
+}
+
+/* ── Sidebar (Stable & Toggle-Friendly) ── */
 [data-testid="stSidebar"] {
-    background-color: var(--surface) !important;
+    background:
+        linear-gradient(180deg, rgba(22, 28, 45, 0.98), rgba(13, 17, 28, 0.98)) !important;
     border-right: 1px solid var(--border) !important;
 }
-[data-testid="stSidebar"] * { color: var(--text) !important; }
 
-/* ---------- Hide default footer & deploy button only ---------- */
-/* Do NOT hide `header` — it contains the sidebar collapse/expand toggle */
-footer { visibility: hidden; }
-[data-testid="stToolbar"] { display: none; }
-[data-testid="stDecoration"] { display: none; }
+/* Safely color text without breaking buttons/toggles */
+[data-testid="stSidebar"] .st-emotion-cache-1r6slb0,
+[data-testid="stSidebar"] p, 
+[data-testid="stSidebar"] label,
+[data-testid="stSidebar"] span {
+    color: var(--text) !important;
+}
+
+/* Keep inputs & buttons visible */
+[data-testid="stSidebar"] input,
+[data-testid="stSidebar"] button,
+[data-testid="stSidebar"] select,
+[data-testid="stSidebar"] textarea {
+    color: var(--text) !important;
+    background-color: var(--panel) !important;
+    border-color: var(--border) !important;
+}
+
+/* ---------- Hide default main menu / footer, keep sidebar toggle ---------- */
+#MainMenu, footer { visibility: hidden; }
 
 /* ---------- File uploader ---------- */
 [data-testid="stFileUploader"] {
@@ -41,6 +76,29 @@ footer { visibility: hidden; }
     background: var(--panel) !important;
     padding: 1rem !important;
     transition: border-color .3s;
+}
+[data-testid="stFileUploader"] button {
+    background: linear-gradient(90deg, rgba(0,229,255,.16), rgba(167,139,250,.16)) !important;
+    border: 1px solid rgba(0,229,255,.35) !important;
+    color: var(--text) !important;
+    border-radius: 999px !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-weight: 700 !important;
+}
+[data-testid="stFileUploader"] button:hover {
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 1px rgba(0,229,255,.2), 0 8px 24px rgba(0,229,255,.08) !important;
+}
+[data-testid="stFileUploader"] section,
+[data-testid="stFileUploader"] > div,
+[data-testid="stFileUploaderDropzone"] {
+    background: var(--panel) !important;
+}
+[data-testid="stFileUploader"] label,
+[data-testid="stFileUploader"] p,
+[data-testid="stFileUploader"] span,
+[data-testid="stFileUploader"] div {
+    color: var(--text) !important;
 }
 [data-testid="stFileUploader"]:hover { border-color: var(--accent) !important; }
 
@@ -92,6 +150,30 @@ footer { visibility: hidden; }
     margin-top: 4px;
 }
 
+/* ---------- Section header ---------- */
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 2rem 0 1rem;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+}
+.section-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+}
+.section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text);
+}
+
 /* ---------- Overview box ---------- */
 .overview-box {
     background: var(--panel);
@@ -105,6 +187,26 @@ footer { visibility: hidden; }
     color: var(--text);
 }
 .overview-box b { color: var(--accent); font-weight: 600; }
+.hero-copy {
+    background: rgba(17, 21, 32, 0.82);
+    border: 1px solid rgba(31, 42, 69, 0.9);
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin: 1rem 0 1.5rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.22);
+}
+.hero-copy p {
+    margin: 0 0 0.9rem 0;
+    color: var(--text);
+    line-height: 1.8;
+    font-size: 14px;
+}
+.hero-copy p:last-child {
+    margin-bottom: 0;
+}
+.hero-copy b {
+    color: var(--accent);
+}
 .math-pill {
     display: inline-block;
     background: rgba(0,229,255,.08);
@@ -116,7 +218,14 @@ footer { visibility: hidden; }
     margin: 2px 4px;
 }
 
-/* ---------- Image panel labels ---------- */
+/* ---------- Image panels ---------- */
+.img-panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    height: 100%;
+}
 .img-panel-title {
     font-family: 'Syne', sans-serif;
     font-size: 11px;
@@ -142,7 +251,7 @@ footer { visibility: hidden; }
     border-color: rgba(255,107,107,.25);
 }
 
-/* ---------- Progress bar ---------- */
+/* ---------- Progress bar (quality indicator) ---------- */
 .quality-bar-wrap {
     background: var(--border);
     border-radius: 4px;
@@ -156,7 +265,7 @@ footer { visibility: hidden; }
     transition: width .5s ease;
 }
 
-/* ---------- Sidebar info box ---------- */
+/* ---------- Sidebar styling ---------- */
 .sidebar-info {
     background: rgba(0,229,255,.05);
     border: 1px solid rgba(0,229,255,.15);
@@ -168,6 +277,30 @@ footer { visibility: hidden; }
     margin-top: 12px;
 }
 .sidebar-info b { color: var(--accent); }
+
+/* ---------- Upload card ---------- */
+.upload-card {
+    background: linear-gradient(180deg, rgba(17, 21, 32, 0.96), rgba(14, 18, 28, 0.96));
+    border: 1px solid rgba(31, 42, 69, 0.95);
+    border-radius: 16px;
+    padding: 18px 18px 8px;
+    margin: 0.5rem 0 1.25rem;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.24);
+}
+.upload-card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+}
+.upload-card-text {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+    margin-bottom: 12px;
+}
 
 /* ---------- Download button ---------- */
 [data-testid="stDownloadButton"] button {
@@ -184,6 +317,11 @@ footer { visibility: hidden; }
 [data-testid="stDownloadButton"] button:hover {
     background: var(--accent) !important;
     color: var(--bg) !important;
+}
+
+/* ---------- Slider ---------- */
+[data-testid="stSlider"] .stSlider > div > div > div {
+    background: var(--accent) !important;
 }
 
 /* ---------- Tabs ---------- */

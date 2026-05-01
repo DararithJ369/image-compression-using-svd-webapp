@@ -1,22 +1,20 @@
-"""
-utils/io.py
-File I/O helpers — image encoding and CSS loading.
-"""
-
+"""I/O utilities: image ↔ bytes, CSS loader."""
 import io
-from pathlib import Path
-
 import numpy as np
 from PIL import Image
+from pathlib import Path
 
 
 def image_to_bytes(img_array: np.ndarray) -> bytes:
-    """Encode a numpy uint8 array as PNG bytes for st.download_button."""
+    """Convert numpy image array to PNG bytes."""
     buf = io.BytesIO()
     Image.fromarray(img_array).save(buf, format="PNG")
     return buf.getvalue()
 
 
-def load_css(path: str | Path) -> str:
-    """Read a .css file and return its contents as a string."""
-    return Path(path).read_text(encoding="utf-8")
+def load_css(css_path: str = "styles/theme.css") -> str:
+    """Load CSS file content for Streamlit injection."""
+    css_file = Path(css_path)
+    if css_file.exists():
+        return css_file.read_text(encoding="utf-8")
+    return ""
