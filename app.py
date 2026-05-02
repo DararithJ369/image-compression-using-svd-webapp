@@ -37,8 +37,14 @@ st.set_page_config(
 
 # ── Imports ───────────────────────────────────────────────────────────────────
 from utils.svd import compress_image, compute_psnr, compute_compression_ratio
-from utils.io import load_css, image_to_bytes
-from components.header import render_hero, render_app_intro, render_overview
+from utils.io import load_css
+from components.header import (
+    render_hero,
+    render_app_intro,
+    render_quick_start,
+    render_main_upload_panel,
+    render_overview,
+)
 from components.sidebar import render_sidebar
 from components.metrics import render_metrics
 from components.tabs import render_tabs
@@ -59,35 +65,19 @@ if css_content:
 # ── Hero + Overview ───────────────────────────────────────────────────────────
 render_hero()
 render_app_intro()
+render_quick_start()
 render_overview()
 
-# ── Main-page upload ───────────────────────────────────────────────────────────
-st.markdown(
-    """
-    <div class="section-header">
-        <div class="section-dot"></div>
-        <div class="section-title">Quick Upload</div>
-    </div>
-    <div class="upload-card">
-        <div class="upload-card-title">Upload on the main page</div>
-        <div class="upload-card-text">
-            Drag and drop a JPG or PNG here to start exploring image compression.
-            You can still use the sidebar uploader and controls if you prefer that layout.
-        </div>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
-main_uploaded_file = st.file_uploader(
-    "Upload file on the main page",
-    type=["jpg", "jpeg", "png"],
-    key="main_page_uploader",
-    label_visibility="visible",
-    help="Click Browse files to upload an image from the main page.",
-)
+main_uploaded_file = render_main_upload_panel()
+main_img_array = None
+main_h = main_w = main_max_k = None
+if main_uploaded_file is not None:
+    main_img_array, main_h, main_w, main_max_k = load_image(main_uploaded_file)
 
 # ── Sidebar Controls ──────────────────────────────────────────────────────────
-sidebar_uploaded_file, sidebar_img_array, sidebar_k, sidebar_h, sidebar_w, sidebar_max_k = render_sidebar()
+sidebar_uploaded_file, sidebar_img_array, sidebar_k, sidebar_h, sidebar_w, sidebar_max_k = render_sidebar(
+    active_image=main_img_array
+)
 
 uploaded_file = main_uploaded_file or sidebar_uploaded_file
 
@@ -95,31 +85,19 @@ uploaded_file = main_uploaded_file or sidebar_uploaded_file
 if uploaded_file is None:
     # Drop zone hint
     st.markdown("""
-    <div style="display:flex; flex-direction:column; align-items:center;
-                justify-content:center; height:380px; margin-top:2rem;
-                background:#111520; border:2px dashed #1f2a45; border-radius:16px;">
-        <div style="font-size:48px; margin-bottom:16px; opacity:.4">⬡</div>
-        <div style="font-family:'Syne',sans-serif; font-size:20px; font-weight:600;
-                    color:#4a5578; letter-spacing:2px;">
-            Upload an image to begin
-        </div>
-        <div style="font-size:12px; color:#2a3455; margin-top:8px; font-family:'JetBrains Mono',monospace;">
-            JPG · PNG  —  use the sidebar uploader
+    <div class="empty-upload-state">
+        <div class="empty-upload-icon">⬡</div>
+        <div class="empty-upload-title">Upload an image to begin</div>
+        <div class="empty-upload-text">
+            Use the large upload panel above or the sidebar chooser to load a JPG or PNG.
         </div>
     </div>
     """, unsafe_allow_html=True)
     st.stop()
 
 if main_uploaded_file is not None:
-    img_array, h, w, max_k = load_image(main_uploaded_file)
-    k = st.slider(
-        "Rank k  (singular values to keep)",
-        min_value=1,
-        max_value=max_k,
-        value=max(1, int(max_k * 0.1)),
-        help="Lower = more compression. Higher = closer to original.",
-        key="main_page_rank_slider",
-    )
+    img_array, h, w, max_k = main_img_array, main_h, main_w, main_max_k
+    k = sidebar_k
 else:
     img_array, h, w, max_k, k = sidebar_img_array, sidebar_h, sidebar_w, sidebar_max_k, sidebar_k
 

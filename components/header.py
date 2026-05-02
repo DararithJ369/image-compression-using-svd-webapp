@@ -47,6 +47,68 @@ def render_app_intro() -> None:
     )
 
 
+def render_quick_start() -> None:
+    """Render a compact three-step getting-started section."""
+    st.markdown(
+        """
+        <div class="section-header">
+            <div class="section-dot"></div>
+            <div class="section-title">Quick Start</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        """
+        <div class="start-grid">
+            <div class="start-card">
+                <div class="start-step">01</div>
+                <div class="start-title">Upload</div>
+                <div class="start-text">Drop a JPG or PNG on the main page to load an image instantly.</div>
+            </div>
+            <div class="start-card">
+                <div class="start-step">02</div>
+                <div class="start-title">Choose k</div>
+                <div class="start-text">Use the slider in the sidebar to control compression strength.</div>
+            </div>
+            <div class="start-card">
+                <div class="start-step">03</div>
+                <div class="start-title">Compare</div>
+                <div class="start-text">Inspect PSNR, ratio, energy, and the reconstructed image panels.</div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_main_upload_panel() -> st.runtime.uploaded_file_manager.UploadedFile | None:
+    """Render the main-page upload card and return the uploaded file."""
+    st.markdown(
+        """
+        <div class="section-header">
+            <div class="section-dot"></div>
+            <div class="section-title">Upload Image</div>
+        </div>
+        <div class="upload-card upload-card-hero">
+            <div class="upload-card-title">Main page uploader</div>
+            <div class="upload-card-text">
+                Use this uploader for the fastest start. The sidebar stays available for controls and
+                will follow whichever image you load here.
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    return st.file_uploader(
+        "Choose an image file",
+        type=["jpg", "jpeg", "png"],
+        key="main_page_uploader",
+        label_visibility="visible",
+        help="Drag and drop an image here, or browse files to upload.",
+    )
+
+
 def render_overview() -> None:
     """Render the SVD explanation expander."""
     with st.expander("How SVD Compression Works", expanded=False):

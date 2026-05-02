@@ -207,6 +207,37 @@ html, body, .stApp, [data-testid="stAppViewContainer"] {
 .hero-copy b {
     color: var(--accent);
 }
+.start-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin: 0.75rem 0 1.5rem;
+}
+.start-card {
+    background: linear-gradient(180deg, rgba(17, 21, 32, 0.95), rgba(14, 18, 28, 0.95));
+    border: 1px solid rgba(31, 42, 69, 0.95);
+    border-radius: 14px;
+    padding: 16px;
+}
+.start-step {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    margin-bottom: 10px;
+}
+.start-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+}
+.start-text {
+    color: var(--muted);
+    line-height: 1.7;
+    font-size: 13px;
+}
 .math-pill {
     display: inline-block;
     background: rgba(0,229,255,.08);
@@ -287,6 +318,10 @@ html, body, .stApp, [data-testid="stAppViewContainer"] {
     margin: 0.5rem 0 1.25rem;
     box-shadow: 0 24px 60px rgba(0, 0, 0, 0.24);
 }
+.upload-card-hero {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+}
 .upload-card-title {
     font-family: 'Syne', sans-serif;
     font-size: 12px;
@@ -300,6 +335,37 @@ html, body, .stApp, [data-testid="stAppViewContainer"] {
     font-size: 13px;
     line-height: 1.7;
     margin-bottom: 12px;
+}
+.empty-upload-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 320px;
+    margin-top: 1rem;
+    border: 1px dashed var(--border);
+    border-radius: 18px;
+    background: linear-gradient(180deg, rgba(17, 21, 32, 0.85), rgba(12, 15, 24, 0.92));
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22);
+    text-align: center;
+    padding: 2rem;
+}
+.empty-upload-icon {
+    font-size: 48px;
+    opacity: 0.45;
+    margin-bottom: 12px;
+}
+.empty-upload-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 10px;
+}
+.empty-upload-text {
+    color: var(--muted);
+    line-height: 1.8;
+    max-width: 520px;
 }
 
 /* ---------- Download button ---------- */
