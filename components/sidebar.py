@@ -29,12 +29,13 @@ def render_sidebar(active_image: np.ndarray | None = None):
 
     uploaded_file = None
     img_array = active_image
+    slider_key = "quality_rank_slider"
 
     if active_image is None:
         st.sidebar.markdown(
             """
             <div class="sidebar-info">
-                Upload from the main page or use the sidebar chooser below.
+                Upload from the main page, try the demo scene, or use the sidebar chooser below.
             </div>
             """,
             unsafe_allow_html=True,
@@ -53,7 +54,7 @@ def render_sidebar(active_image: np.ndarray | None = None):
         st.sidebar.markdown(
             """
             <div class="sidebar-info">
-                Main-page upload detected. Use the slider below to control compression.
+                Image loaded. Use the presets or slider below to control compression.
             </div>
             """,
             unsafe_allow_html=True,
@@ -62,12 +63,28 @@ def render_sidebar(active_image: np.ndarray | None = None):
     h, w = img_array.shape[:2]
     max_k = min(h, w)
 
+    if slider_key not in st.session_state:
+        st.session_state[slider_key] = max(1, int(max_k * 0.1))
+
+    if max_k >= 10:
+        preset_cols = st.sidebar.columns(3)
+        with preset_cols[0]:
+            if st.button("Low", use_container_width=True, key="preset_low"):
+                st.session_state[slider_key] = max(1, int(max_k * 0.05))
+        with preset_cols[1]:
+            if st.button("Mid", use_container_width=True, key="preset_mid"):
+                st.session_state[slider_key] = max(1, int(max_k * 0.12))
+        with preset_cols[2]:
+            if st.button("High", use_container_width=True, key="preset_high"):
+                st.session_state[slider_key] = max(1, int(max_k * 0.25))
+
     st.sidebar.markdown("---")
     k = st.sidebar.slider(
         "Rank k  (singular values to keep)",
         min_value=1,
         max_value=max_k,
-        value=max(1, int(max_k * 0.1)),
+        value=st.session_state[slider_key],
+        key=slider_key,
         help="Lower = more compression. Higher = closer to original.",
     )
 

@@ -17,7 +17,7 @@ def render_tabs(img_array: np.ndarray, compressed_img: np.ndarray,
 
     # ── TAB 1 · Side-by-side ──────────────────────────────────────────────────
     with tab1:
-        col1, col2 = st.columns(2)
+        col1, col2 = st.columns(2, gap="large")
         with col1:
             st.markdown("""
             <div class="img-panel-title">
@@ -77,18 +77,20 @@ def render_tabs(img_array: np.ndarray, compressed_img: np.ndarray,
         """, unsafe_allow_html=True)
         top_sv = sv_list[0][:10]
         total = np.sum(sv_list[0])
-        cols = st.columns(10)
-        for i, (col, sv) in enumerate(zip(cols, top_sv)):
-            with col:
-                pct = sv / total * 100
-                st.markdown(f"""
-                <div style="background:#111520; border:1px solid #1f2a45; border-radius:6px;
-                            padding:10px 6px; text-align:center;">
-                    <div style="font-size:9px; color:#4a5578; margin-bottom:4px;">σ<sub>{i+1}</sub></div>
-                    <div style="font-size:11px; color:#00e5ff; font-weight:600;">{sv:.0f}</div>
-                    <div style="font-size:9px; color:#4a5578; margin-top:3px;">{pct:.1f}%</div>
-                </div>
-                """, unsafe_allow_html=True)
+        top_rows = [top_sv[i:i + 5] for i in range(0, len(top_sv), 5)]
+        for row_index, row in enumerate(top_rows):
+            cols = st.columns(len(row), gap="medium")
+            for i, (col, sv) in enumerate(zip(cols, row), start=row_index * 5):
+                with col:
+                    pct = sv / total * 100
+                    st.markdown(f"""
+                    <div style="background:#111520; border:1px solid #1f2a45; border-radius:8px;
+                                padding:12px 8px; text-align:center; min-height:88px;">
+                        <div style="font-size:9px; color:#4a5578; margin-bottom:4px;">σ<sub>{i+1}</sub></div>
+                        <div style="font-size:12px; color:#00e5ff; font-weight:600;">{sv:.0f}</div>
+                        <div style="font-size:9px; color:#4a5578; margin-top:3px;">{pct:.1f}%</div>
+                    </div>
+                    """, unsafe_allow_html=True)
 
     # ── TAB 3 · Difference map ───────────────────────────────────────────────
     with tab3:
@@ -99,11 +101,9 @@ def render_tabs(img_array: np.ndarray, compressed_img: np.ndarray,
         </div>
         """, unsafe_allow_html=True)
 
-        c1, c2, c3 = st.columns([2, 3, 2])
-        with c2:
-            fig2 = make_error_map(img_array, compressed_img)
-            st.pyplot(fig2, use_container_width=True)
-            plt.close(fig2)
+        fig2 = make_error_map(img_array, compressed_img)
+        st.pyplot(fig2, use_container_width=True)
+        plt.close(fig2)
 
         # Per-channel MAE
         st.markdown("""
@@ -112,7 +112,7 @@ def render_tabs(img_array: np.ndarray, compressed_img: np.ndarray,
         """, unsafe_allow_html=True)
         ch_colors = ['#ff6b6b', '#34d399', '#00e5ff']
         ch_labels = ['Red', 'Green', 'Blue']
-        ch_cols = st.columns(3)
+        ch_cols = st.columns(3, gap="large")
         for i, (col, color, label) in enumerate(zip(ch_cols, ch_colors, ch_labels)):
             mae = np.mean(np.abs(
                 img_array[:, :, i].astype(np.float64) - compressed_img[:, :, i].astype(np.float64)

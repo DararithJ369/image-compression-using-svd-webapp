@@ -28,18 +28,20 @@ def render_app_intro() -> None:
         """
         <div class="hero-copy">
             <p>
-                This web app shows image compression through Singular Value Decomposition (SVD)
-                in a visual, interactive way. It keeps the strongest image patterns and removes
-                the less important detail so you can see the trade-off between quality and size.
+                This web app turns Singular Value Decomposition (SVD) into an interactive visual
+                playground. It keeps the strongest image patterns and removes the less important
+                detail so you can see the trade-off between quality and size in real time.
             </p>
             <p>
-                Upload a JPG or PNG from the main page or the sidebar, then choose a rank <b>k</b>
-                to control how many singular values are preserved. Lower values create stronger
-                compression, while higher values keep the reconstruction closer to the original.
+                Use the main upload card for the fastest start, or try the built-in demo scene to
+                explore the app immediately. Then choose a rank <b>k</b> to control how many
+                singular values are preserved. Lower values create stronger compression, while
+                higher values keep the reconstruction closer to the original.
             </p>
             <p>
                 The app also reports PSNR, compression ratio, retained energy, and side-by-side
-                comparison views so you can study how the approximation changes across color channels.
+                comparison views so you can study how the approximation changes across color
+                channels.
             </p>
         </div>
         """,
@@ -64,12 +66,12 @@ def render_quick_start() -> None:
             <div class="start-card">
                 <div class="start-step">01</div>
                 <div class="start-title">Upload</div>
-                <div class="start-text">Drop a JPG or PNG on the main page to load an image instantly.</div>
+                <div class="start-text">Drop a JPG or PNG on the main page or launch the demo scene.</div>
             </div>
             <div class="start-card">
                 <div class="start-step">02</div>
                 <div class="start-title">Choose k</div>
-                <div class="start-text">Use the slider in the sidebar to control compression strength.</div>
+                <div class="start-text">Use the sidebar slider or the preset buttons to tune compression.</div>
             </div>
             <div class="start-card">
                 <div class="start-step">03</div>
@@ -82,31 +84,50 @@ def render_quick_start() -> None:
     )
 
 
-def render_main_upload_panel() -> st.runtime.uploaded_file_manager.UploadedFile | None:
-    """Render the main-page upload card and return the uploaded file."""
+def render_main_upload_panel() -> tuple[object | None, bool]:
+    """Render the main-page upload card and return the uploaded file and demo action."""
     st.markdown(
         """
         <div class="section-header">
             <div class="section-dot"></div>
             <div class="section-title">Upload Image</div>
         </div>
-        <div class="upload-card upload-card-hero">
+        <div class="upload-card upload-card-hero upload-card-shimmer">
             <div class="upload-card-title">Main page uploader</div>
             <div class="upload-card-text">
-                Use this uploader for the fastest start. The sidebar stays available for controls and
-                will follow whichever image you load here.
+                Use this uploader for the fastest start. You can also try the demo scene if you want
+                to explore the charts and compression controls without uploading a file first.
+            </div>
+            <div class="upload-tip-chip">
+                Switch between upload and demo mode whenever you want.
             </div>
         </div>
         """,
         unsafe_allow_html=True,
     )
+    use_demo = st.radio(
+        "Start mode",
+        options=["Upload image", "Demo scene"],
+        horizontal=True,
+        key="main_page_mode",
+        help="Switch to the demo scene if you want to explore without uploading first.",
+    )
+    if use_demo == "Demo scene":
+        st.markdown(
+            """
+            <div class="upload-tip-chip">Demo scene ready — charts and controls stay active.</div>
+            """,
+            unsafe_allow_html=True,
+        )
+        return None, True
+
     return st.file_uploader(
         "Choose an image file",
         type=["jpg", "jpeg", "png"],
         key="main_page_uploader",
         label_visibility="visible",
         help="Drag and drop an image here, or browse files to upload.",
-    )
+    ), False
 
 
 def render_overview() -> None:
